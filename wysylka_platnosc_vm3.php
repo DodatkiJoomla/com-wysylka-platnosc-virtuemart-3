@@ -9,6 +9,8 @@ jimport('joomla.html.parameter');
 jimport('joomla.registry.registry');
 jimport( 'joomla.pl' );
 
+
+
 if (isset($_POST['zapisz'])) {
 
     $params = array();
