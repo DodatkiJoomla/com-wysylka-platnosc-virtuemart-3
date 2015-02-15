@@ -35,7 +35,7 @@ if ($plgWlaczony < 1) {
 
         // parametry
         $params = JComponentHelper::getParams('com_wysylka_platnosci');
-        for ($i = 1; $i <= 3; ++$i) {
+        for ($i = 1; $i <= 50; ++$i) {
 
             echo "<tr>";
             echo "<td colspan=2>Utwórz " . $i . " powiązanie wysyłki z płatnościami:<br></td>";
