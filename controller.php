@@ -50,24 +50,35 @@ class WpController extends JControllerLegacy
         parent::display($cachable);
     }
 
-
+    /*
+     * Toolbar tittle.
+     */
     protected function addToolbar()
     {
         // assuming you have other toolbar buttons ...
 
-        JToolBarHelper::title( 'Powiązanie wysyłki z płatnościami Dla Virtuemart', 'generic.png' );
+        JToolBarHelper::title('Powiązanie wysyłki z płatnościami Dla Virtuemart', 'generic.png');
 
     }
 
-    public function jezyk() {
+    /*
+     * Obsługa języka.
+     */
+    public function jezyk()
+    {
         $lang = JFactory::getLanguage();
         $lang = $lang->getLocale();
         $jezyk = substr(strtolower($lang[2]), 0, 5);
         return $jezyk;
     }
 
-
-    public function getSelectSending($i, $wysylki, $params) {
+    /*
+     * Wypisanie wsyztskich metod wysyłki
+     * $param $i, $wysylka and $params
+     * $return - view html
+     */
+    public function getSelectSending($i, $wysylki, $params)
+    {
 
         $view = "<select style='margin: 10px 0;' name='shipment_name" . $i . "'>";
         $view .= "<option value='0'>wybierz</option>";
@@ -83,9 +94,15 @@ class WpController extends JControllerLegacy
         return $view;
     }
 
-    public function getSelectPayment($i, $platnosci, $params) {
+    /*
+        * Wypisanie wsyztskich metod płatności
+        * $param $i, $platnosci and $params
+        * $return - view html
+        */
+    public function getSelectPayment($i, $platnosci, $params)
+    {
 
-        $view =  "<select multiple='multiple' style='margin: 10px 0;' name='payment_name" . $i . "[]'>";
+        $view = "<select multiple='multiple' style='margin: 10px 0;' name='payment_name" . $i . "[]'>";
         foreach ($platnosci as $platnosc) {
             $selected = "";
             if (version_compare(JVERSION, '1.6.0', '<')) {
@@ -104,9 +121,9 @@ class WpController extends JControllerLegacy
             }
 
 
-            $view .=  "<option " . $selected . " value='" . $platnosc->id . "'>" . $platnosc->payment_name . "</option>";
+            $view .= "<option " . $selected . " value='" . $platnosc->id . "'>" . $platnosc->payment_name . "</option>";
         }
-        $view .=  "</select>";
+        $view .= "</select>";
 
         return $view;
     }

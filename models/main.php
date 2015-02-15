@@ -12,26 +12,14 @@ jimport('joomla.application.component.modelitem');
 
 class WpModelMain extends JModelItem
 {
-    /**
-     * @var string msg
+    /*
+     * Zapis parametrów do bazy
+     * $params = $params
+     * $return Success or Error message
      */
-    protected $msg;
 
-    /**
-     * Get the message
-     * @return string The message to be displayed to the user
-     */
-    public function getMsg()
+    public function saveData($params)
     {
-
-        if (!isset($this->msg))
-        {
-            $this->msg = 'Hello World!';
-        }
-        return $this->msg;
-    }
-
-    public function saveData($params) {
         $db = JFactory::getDBO();
         if (version_compare(JVERSION, '1.6.0', 'ge')) {
             $query = " UPDATE #__extensions SET params='" . json_encode($params) . "' WHERE element='com_wysylka_platnosci' ";
@@ -49,6 +37,9 @@ class WpModelMain extends JModelItem
         }
     }
 
+    /*
+     * Wyświetlanie wysyłek VM3
+     */
     public function wysylki()
     {
         $controller = JControllerLegacy::getInstance('Wp');
@@ -68,6 +59,9 @@ class WpModelMain extends JModelItem
         return $db->loadObjectList();
     }
 
+    /*
+     * Wyświetlanie płatności VM3
+     */
     public function platnosci()
     {
         $controller = JControllerLegacy::getInstance('Wp');
@@ -86,7 +80,6 @@ class WpModelMain extends JModelItem
         $db->setQuery($q2);
         return $db->loadObjectList();
     }
-
 
 
 }

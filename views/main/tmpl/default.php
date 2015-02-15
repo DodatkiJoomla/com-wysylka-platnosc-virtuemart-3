@@ -44,12 +44,12 @@ if ($plgWlaczony < 1) {
             echo "</tr>";
             echo "<tr><td>";
 
-             echo $controller->getSelectSending( $i, $wysylki, $params);
+            echo $controller->getSelectSending($i, $wysylki, $params);
 
             echo "</td>";
 
             echo "<td><br>";
-            echo $controller->getSelectPayment( $i, $platnosci, $params);
+            echo $controller->getSelectPayment($i, $platnosci, $params);
 
             echo "</td>";
             echo "</tr>";
