@@ -21,6 +21,8 @@ class WpController extends JControllerLegacy
 
     public function display($cachable = false, $urlparams = false)
     {
+
+        $model = $this->getModel('main');
         $host = JURI::root();
         $document = JFactory::getDocument();
         if (isset($_POST['zapisz'])) {
@@ -33,21 +35,7 @@ class WpController extends JControllerLegacy
                 $params[$k] = $p;
             }
 
-            $db = JFactory::getDBO();
-            if (version_compare(JVERSION, '1.6.0', 'ge')) {
-                $query = " UPDATE #__extensions SET params='" . json_encode($params) . "' WHERE element='com_wysylka_platnosci' ";
-            } else {
-                $query = " UPDATE #__components SET params='" . json_encode($params) . "' WHERE `option`='com_wysylka_platnosci' ";
-            }
-
-            $db->setQuery($query);
-            $wynik = $db->query($query);
-            if (empty($wynik)) {
-                JError::raiseWarning(100, 'Nie można zapisać powiązań do bazy danych!');
-            } else {
-                JError::raiseNotice(100, 'Powiązanie zostało zapisane poprawnie!');
-
-            }
+            $model->saveData($params);
             $jap = JFactory::getApplication();
             $jap->redirect('index.php?option=com_wysylka_platnosci');
         }
@@ -78,38 +66,49 @@ class WpController extends JControllerLegacy
         return $jezyk;
     }
 
-    public function wysylki()
-    {
-        $db = JFactory::getDBO();
 
-        // wysyłka
-        $q1 = "SELECT virtuemart_shipmentmethod_id AS id, shipment_name FROM #__virtuemart_shipmentmethods JOIN #__virtuemart_shipmentmethods_" . $this->jezyk() . " using(virtuemart_shipmentmethod_id)";
-        // dodanie kolejnych tabel translacji!
-        $join_sql = "SHOW TABLE STATUS WHERE Name LIKE '%_virtuemart_shipmentmethods_%' AND Name NOT LIKE '%_virtuemart_shipmentmethods_" . $this->jezyk() . "%'";
-        $db->setQuery($join_sql);
-        $joiny = $db->loadObjectList();
-        foreach ($joiny as $j) {
-            $q1 .= ' UNION SELECT virtuemart_shipmentmethod_id AS id, shipment_name FROM #__virtuemart_shipmentmethods JOIN ' . $j->Name . ' using(virtuemart_shipmentmethod_id)   ';
+    public function getSelectSending($i, $wysylki, $params) {
+
+        $view = "<select style='margin: 10px 0;' name='shipment_name" . $i . "'>";
+        $view .= "<option value='0'>wybierz</option>";
+        foreach ($wysylki as $wysylka) {
+            $selected = "";
+            $shipment = $params->get("shipment_name" . $i);
+            if (!empty($shipment) && $shipment == $wysylka->id) {
+                $selected = "selected='selected'";
+            }
+            $view .= "<option " . $selected . " value='" . $wysylka->id . "'>" . $wysylka->shipment_name . "</option>";
         }
-        $db->setQuery($q1);
-        return $db->loadObjectList();
+        $view .= "</select>";
+        return $view;
     }
 
-    public function platnosci()
-    {
-        $db = JFactory::getDBO();
+    public function getSelectPayment($i, $platnosci, $params) {
 
-        // płatności
-        $q2 = "SELECT virtuemart_paymentmethod_id AS id, payment_name FROM #__virtuemart_paymentmethods JOIN #__virtuemart_paymentmethods_" . $this->jezyk() . " using(virtuemart_paymentmethod_id)";
-        // dodanie kolejnych tabel translacji!
-        $join_sql = "SHOW TABLE STATUS WHERE Name LIKE '%_virtuemart_paymentmethods_%' AND Name NOT LIKE '%_virtuemart_paymentmethods_" . $this->jezyk() . "%'";
-        $db->setQuery($join_sql);
-        $joiny = $db->loadObjectList();
-        foreach ($joiny as $j) {
-            $q2 .= ' UNION SELECT virtuemart_paymentmethod_id AS id, payment_name FROM #__virtuemart_paymentmethods JOIN ' . $j->Name . ' using(virtuemart_paymentmethod_id)   ';
+        $view =  "<select multiple='multiple' style='margin: 10px 0;' name='payment_name" . $i . "[]'>";
+        foreach ($platnosci as $platnosc) {
+            $selected = "";
+            if (version_compare(JVERSION, '1.6.0', '<')) {
+                if (is_array($params->get("payment_name" . $i)) && in_array($platnosc->id, $params->get("payment_name" . $i))) {
+                    $selected = "selected='selected'";
+                } else if (!is_array($params->get("payment_name" . $i)) && $platnosc->id == $params->get("payment_name" . $i)) {
+                    $selected = "selected='selected'";
+                }
+            } else {
+                $param_array = $params->get("payment_name" . $i);
+                if (!empty($param_array)) {
+                    if (in_array($platnosc->id, $param_array)) {
+                        $selected = "selected='selected'";
+                    }
+                }
+            }
+
+
+            $view .=  "<option " . $selected . " value='" . $platnosc->id . "'>" . $platnosc->payment_name . "</option>";
         }
-        $db->setQuery($q2);
-        return $db->loadObjectList();
+        $view .=  "</select>";
+
+        return $view;
     }
 
 }

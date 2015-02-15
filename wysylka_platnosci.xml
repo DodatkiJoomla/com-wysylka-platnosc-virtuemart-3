@@ -16,6 +16,7 @@
             <filename component="com_wysylka_platnosci">controller.php</filename>
             <folder>models</folder>
             <folder>views</folder>
+            <folder>models</folder>
 
         </files>
     </administration>

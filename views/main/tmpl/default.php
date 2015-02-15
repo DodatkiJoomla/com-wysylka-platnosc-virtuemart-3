@@ -11,6 +11,8 @@ defined('_JEXEC') or die('Restricted Access');
 JHtml::_('behavior.tooltip');
 
 $controller = JControllerLegacy::getInstance('Wp');
+$model = $this->getModel();
+
 $host = JURI::root();
 $document = JFactory::getDocument();
 $db = JFactory::getDBO();
@@ -29,55 +31,25 @@ if ($plgWlaczony < 1) {
     <table border=0>
         <?php
 
-        $wysylki = $controller->wysylki();
+        $wysylki = $model->wysylki();
 
-        $platnosci = $controller->platnosci();
+        $platnosci = $model->platnosci();
 
         // parametry
         $params = JComponentHelper::getParams('com_wysylka_platnosci');
-        for ($i = 1; $i <= 50; ++$i) {
+        for ($i = 1; $i <= 3; ++$i) {
 
             echo "<tr>";
             echo "<td colspan=2>Utwórz " . $i . " powiązanie wysyłki z płatnościami:<br></td>";
             echo "</tr>";
             echo "<tr><td>";
-            echo "<select style='margin: 10px 0;' name='shipment_name" . $i . "'>";
-            echo "<option value='0'>wybierz</option>";
-            foreach ($wysylki as $wysylka) {
-                $selected = "";
-                $shipment = $params->get("shipment_name" . $i);
-                if (!empty($shipment) && $shipment == $wysylka->id) {
-                    $selected = "selected='selected'";
-                }
-                echo "<option " . $selected . " value='" . $wysylka->id . "'>" . $wysylka->shipment_name . "</option>";
-            }
-            echo "</select>";
+
+             echo $controller->getSelectSending( $i, $wysylki, $params);
 
             echo "</td>";
 
             echo "<td><br>";
-            echo "<select multiple='multiple' style='margin: 10px 0;' name='payment_name" . $i . "[]'>";
-            foreach ($platnosci as $platnosc) {
-                $selected = "";
-                if (version_compare(JVERSION, '1.6.0', '<')) {
-                    if (is_array($params->get("payment_name" . $i)) && in_array($platnosc->id, $params->get("payment_name" . $i))) {
-                        $selected = "selected='selected'";
-                    } else if (!is_array($params->get("payment_name" . $i)) && $platnosc->id == $params->get("payment_name" . $i)) {
-                        $selected = "selected='selected'";
-                    }
-                } else {
-                    $param_array = $params->get("payment_name" . $i);
-                    if (!empty($param_array)) {
-                        if (in_array($platnosc->id, $param_array)) {
-                            $selected = "selected='selected'";
-                        }
-                    }
-                }
-
-
-                echo "<option " . $selected . " value='" . $platnosc->id . "'>" . $platnosc->payment_name . "</option>";
-            }
-            echo "</select>";
+            echo $controller->getSelectPayment( $i, $platnosci, $params);
 
             echo "</td>";
             echo "</tr>";
