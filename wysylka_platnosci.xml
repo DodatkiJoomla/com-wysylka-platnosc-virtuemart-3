@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" client="site" method="upgrade">
+    <name>com_wysylka_platnosci</name>
+    <author>Dodatkijoomla.pl and sulzycki.com.pl</author>
+    <creationDate>04.02.2015</creationDate>
+    <copyright>Copyright (c) 2015 DodatkiJoomla.pl</copyright>
+    <license>GNU/GPL v2</license>
+    <authorEmail>kontakt@dodatkijoomla.pl</authorEmail>
+    <authorUrl>http://dodatkijoomla.pl</authorUrl>
+    <version>2.0</version>
+    <description>Dodatek wiążący wysyłki z płatnościami w Virtuemart 3 dla Joomla 3.</description>
+    <administration>
+        <menu link="option=com_wysylka_platnosci">COM_WPVM_NAME_COMPONENT</menu>
+        <files>
+            <filename component="com_wysylka_platnosci">wysylka_platnosci.php</filename>
+            <filename component="com_wysylka_platnosci">controller.php</filename>
+            <folder>models</folder>
+            <folder>views</folder>
+
+        </files>
+    </administration>
+</extension>
