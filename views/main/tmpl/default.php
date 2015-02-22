@@ -37,7 +37,7 @@ if ($plgWlaczony < 1) {
 
         // parametry
         $params = JComponentHelper::getParams('com_wysylka_platnosci');
-        for ($i = 1; $i <= 3; ++$i) {
+        for ($i = 1; $i <= 50; ++$i) {
 
             echo "<tr>";
             echo "<td colspan=2>".JText::_('COM_WYSYLKA_PLATNOSCI_CREATE')."<br></td>";
