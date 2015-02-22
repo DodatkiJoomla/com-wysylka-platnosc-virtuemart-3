@@ -57,7 +57,7 @@ class WpController extends JControllerLegacy
     {
         // assuming you have other toolbar buttons ...
 
-        JToolBarHelper::title('Powiązanie wysyłki z płatnościami Dla Virtuemart', 'generic.png');
+        JToolBarHelper::title('COM_WYSYLKA_PLATNOSCI_TITLE', 'generic.png');
 
     }
 
@@ -81,7 +81,7 @@ class WpController extends JControllerLegacy
     {
 
         $view = "<select style='margin: 10px 0;' name='shipment_name" . $i . "'>";
-        $view .= "<option value='0'>wybierz</option>";
+        $view .= "<option value='0'>".JText::_('COM_WYSYLKA_PLATNOSCI_SELECT')."</option>";
         foreach ($wysylki as $wysylka) {
             $selected = "";
             $shipment = $params->get("shipment_name" . $i);

@@ -23,10 +23,10 @@ $query = 'SELECT extension_id FROM #__extensions WHERE element="wysylka_platnosc
 $db->setQuery($query);
 $plgWlaczony = $db->loadResult();
 if ($plgWlaczony < 1) {
-    JError::raiseNotice(100, 'Plugin dołączony do komponentu, powinien zostać zainstalowany i opublikowany. W innym wypadku powiązanie wysyłek i płatności nie będzie działać!');
+    JError::raiseNotice(100, JText::_('COM_WYSYLKA_PLATNOSCI_PLUGIN_WARNING'));
 }
 ?>
-<h3>Poniżej powiążesz metody wysyłek z metodami płatności:</h3>
+<h3><?php echo JText::_('COM_WYSYLKA_PLATNOSCI_HEADER_INFO'); ?></h3>
 <form method='POST'>
     <table border=0>
         <?php
@@ -40,7 +40,7 @@ if ($plgWlaczony < 1) {
         for ($i = 1; $i <= 3; ++$i) {
 
             echo "<tr>";
-            echo "<td colspan=2>Utwórz " . $i . " powiązanie wysyłki z płatnościami:<br></td>";
+            echo "<td colspan=2>".JText::_('COM_WYSYLKA_PLATNOSCI_CREATE')."<br></td>";
             echo "</tr>";
             echo "<tr><td>";
 
@@ -57,9 +57,9 @@ if ($plgWlaczony < 1) {
         ?>
     </table>
     <p>
-        CTRL + lewy przycisk myszy - aby wybrać więcej niż 1 płatność, lub usunąć instniejące.
+        <?php echo JText::_('COM_WYSYLKA_PLATNOSCI_INFO_BOTTOM'); ?>
     </p>
-    <input type='submit' name='zapisz' value='Zapisz ustawienia'>
+    <input type='submit' name='zapisz' value='<?php echo JText::_('COM_WYSYLKA_PLATNOSCI_SAVE_SETTING'); ?>'>
     <input type='hidden' name='option' value='com_wysylka_platnosci'>
 </form>
 

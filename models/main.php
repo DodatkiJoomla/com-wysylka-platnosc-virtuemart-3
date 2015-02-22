@@ -30,9 +30,9 @@ class WpModelMain extends JModelItem
         $db->setQuery($query);
         $wynik = $db->query($query);
         if (empty($wynik)) {
-            JError::raiseWarning(100, 'Nie można zapisać powiązań do bazy danych!');
+            JError::raiseWarning(100, 'COM_WYSYLKA_PLATNOSCI_ERROR_SAVE');
         } else {
-            JError::raiseNotice(100, 'Powiązanie zostało zapisane poprawnie!');
+            JError::raiseNotice(100, 'COM_WYSYLKA_PLATNOSCI_SUCCESS_SAVE');
 
         }
     }
